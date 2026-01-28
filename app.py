@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS   # ✅ ADDED (required for mobile apps)
+from flask_cors import CORS   # ✅ Required for Flutter/mobile apps
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -9,12 +9,11 @@ import cv2
 import os
 from datetime import datetime
 
-
 # =========================
 # APP CONFIG
 # =========================
 app = Flask(__name__)
-CORS(app)   # ✅ ADDED (allow requests from APK)
+CORS(app)   # ✅ Allow requests from Flutter
 
 IMG_SIZE = (224, 224)
 MODEL_PATH = "model.h5"
@@ -161,3 +160,10 @@ def invalid_response(message, img_path):
         "description": "Prediction requires a clear tomato leaf image.",
         "crop": "Tomato"
     }), 400
+
+# =========================
+# RUN APP
+# =========================
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))  # Render will provide PORT
+    app.run(host="0.0.0.0", port=port)
